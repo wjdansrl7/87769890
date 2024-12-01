@@ -1,4 +1,4 @@
-package com.sk.backend.domain.repository;
+package com.sk.backend.domain.repository.user;
 
 import com.sk.backend.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
