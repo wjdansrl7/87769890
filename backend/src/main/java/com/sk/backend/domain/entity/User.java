@@ -1,10 +1,7 @@
 package com.sk.backend.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 /**
  * packageName    : com.sk.backend.domain.entity
@@ -15,8 +12,9 @@ import lombok.RequiredArgsConstructor;
  */
 @Entity
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "users")
 public class User extends BaseEntity {
 
     @Id

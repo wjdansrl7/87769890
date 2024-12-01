@@ -8,4 +8,5 @@ package com.sk.backend.application.service.user;
  * description    :
  */
 public interface UserService {
+
 }

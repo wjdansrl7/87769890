@@ -1,10 +1,7 @@
 package com.sk.backend.domain.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 /**
  * packageName    : com.sk.backend.domain.entity
@@ -15,7 +12,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Entity
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board extends BaseEntity {
 
@@ -26,7 +23,7 @@ public class Board extends BaseEntity {
 
     private String title; // 제목
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; // 작성자 id
 

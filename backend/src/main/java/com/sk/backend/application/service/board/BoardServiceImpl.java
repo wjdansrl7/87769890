@@ -3,6 +3,7 @@ package com.sk.backend.application.service.board;
 import com.sk.backend.domain.repository.board.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * packageName    : com.sk.backend.application.service.board
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
 
