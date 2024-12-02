@@ -1,5 +1,9 @@
 package com.sk.backend.application.service.user;
 
+import com.sk.backend.domain.dto.user.LoginRequest;
+import com.sk.backend.domain.dto.user.LoginResponse;
+import com.sk.backend.domain.entity.User;
+
 /**
  * packageName    : com.sk.backend.application.service.user
  * fileName       : UserService
@@ -8,5 +12,12 @@ package com.sk.backend.application.service.user;
  * description    :
  */
 public interface UserService {
+
+    // 유저 로그인
+    LoginResponse login(LoginRequest loginRequest);
+
+    void logout();
+
+    User selectLoginUser(Long id);
 
 }
