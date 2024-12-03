@@ -12,7 +12,7 @@ import com.sk.backend.domain.entity.User;
  * description    :
  */
 public interface UserService {
-
+    Long saveUser(LoginRequest userCreateDto);
     // 유저 로그인
     LoginResponse login(LoginRequest loginRequest);
 

@@ -21,6 +21,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final PasswordService passwordService;
+
+    @Override
+    public Long saveUser(LoginRequest userCreateDto) {
+        String hashPwd = passwordService.encode(userCreateDto.getPassword());
+        String role = "ROLE_USER"; // 기본적으로 USER 권한 추가
+        User user = User.builder()
+                .username(userCreateDto.getUsername())
+                .password(hashPwd)
+                .role(role)
+                .build();
+        return userRepository.save(user).getId();
+    }
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {

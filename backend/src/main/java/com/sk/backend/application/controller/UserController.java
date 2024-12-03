@@ -24,6 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
+    @PostMapping
+    public ResponseEntity<?> createUser(@RequestBody LoginRequest userCreateDto) {
+        Long createId = userService.saveUser(userCreateDto);
+        return new ResponseEntity<>(createId, HttpStatus.CREATED);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         LoginResponse loginResponse = userService.login(loginRequest);

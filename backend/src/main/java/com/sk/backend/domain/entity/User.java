@@ -1,5 +1,6 @@
 package com.sk.backend.domain.entity;
 
+import com.sk.backend.common.constant.entity_field.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,6 @@ import lombok.*;
  */
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 public class User extends BaseEntity {
@@ -26,4 +26,14 @@ public class User extends BaseEntity {
 
     private String password;
 
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
+    private String role;
+
+    @Builder
+    public User(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 }
