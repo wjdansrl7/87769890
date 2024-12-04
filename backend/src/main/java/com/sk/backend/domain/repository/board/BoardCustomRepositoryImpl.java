@@ -7,7 +7,6 @@ import com.sk.backend.domain.dto.board.BoardCardResponse;
 import com.sk.backend.domain.dto.board.BoardDetailResponse;
 import com.sk.backend.domain.dto.board.BoardSearchFilter;
 import com.sk.backend.domain.entity.QBoard;
-import com.sk.backend.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -35,11 +34,13 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
                 .select(
                         Projections.constructor
                                 (BoardDetailResponse.class,
+                                        b.id,
                                         b.title,
                                         b.author.username,
-                                        b.modifiedAt,
+                                        b.createdAt,
                                         b.viewCnt,
-                                        b.content
+                                        b.content,
+                                        b.file
                                 ))
                 .from(b)
                 .where(b.id.eq(id), b.deletedAt.isNull())
@@ -68,6 +69,7 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
         List<BoardCardResponse> boardCardResponses = queryFactory
                 .select(
                         Projections.constructor(BoardCardResponse.class,
+                                b.id,
                                 b.title,
                                 b.author.username,
                                 b.viewCnt,
@@ -76,7 +78,7 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
                         )
                 )
                 .from(b)
-                .where(b.deletedAt.isNull())
+                .where(builder, b.deletedAt.isNull())
                 .orderBy(b.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -85,7 +87,7 @@ public class BoardCustomRepositoryImpl implements BoardCustomRepository {
         Long total = queryFactory
                 .select(b.count())
                 .from(b)
-                .where(builder)
+                .where(builder, b.deletedAt.isNull())
                 .fetchOne();
 
         return new PageImpl<>(boardCardResponses, pageable, total);

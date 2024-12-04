@@ -1,10 +1,7 @@
 package com.sk.backend.application.service.board;
 
 import com.sk.backend.common.validator.UserValidator;
-import com.sk.backend.domain.dto.board.BoardCardResponse;
-import com.sk.backend.domain.dto.board.BoardCreateRequest;
-import com.sk.backend.domain.dto.board.BoardDetailResponse;
-import com.sk.backend.domain.dto.board.BoardSearchFilter;
+import com.sk.backend.domain.dto.board.*;
 import com.sk.backend.domain.entity.Board;
 import com.sk.backend.domain.entity.User;
 import com.sk.backend.domain.repository.board.BoardRepository;
@@ -12,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * packageName    : com.sk.backend.application.service.board
@@ -29,11 +24,6 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
     private final UserValidator userValidator;
 
-    /**
-     * 로그인 검증은 인증(Authentication)의 역할
-     * DB 존재 여부는 비즈니스 로직 검증의 일부
-     * 책임 분리의 원칙
-     */
     @Transactional
     @Override
     public Long createBoard(BoardCreateRequest boardCreateRequest, User loginUser) {
@@ -93,9 +83,18 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Page<BoardCardResponse> getBoardAll(BoardSearchFilter boardSearchFilter, User loginUser) {
-        userValidator.checkUserNonNull(loginUser);
+    public PageResponseDTO<BoardCardResponse> getBoardAll(BoardSearchFilter boardSearchFilter) {
+        Page<BoardCardResponse> boards = boardRepository.findBoardsByFilterAndLoginUser(boardSearchFilter);
 
-        return boardRepository.findBoardsByFilterAndLoginUser(boardSearchFilter);
+        return new PageResponseDTO<>(
+                boards.getContent(),
+                boards.getNumber(),
+                boards.getSize(),
+                boards.getTotalElements(),
+                boards.getTotalPages(),
+                boards.isLast(),
+                boards.isFirst()
+        );
+
     }
 }

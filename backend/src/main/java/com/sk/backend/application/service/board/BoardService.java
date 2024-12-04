@@ -1,13 +1,7 @@
 package com.sk.backend.application.service.board;
 
-import com.sk.backend.domain.dto.board.BoardCardResponse;
-import com.sk.backend.domain.dto.board.BoardCreateRequest;
-import com.sk.backend.domain.dto.board.BoardDetailResponse;
-import com.sk.backend.domain.dto.board.BoardSearchFilter;
+import com.sk.backend.domain.dto.board.*;
 import com.sk.backend.domain.entity.User;
-import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 /**
  * packageName    : com.sk.backend.application.service.board
@@ -31,7 +25,7 @@ public interface BoardService {
     BoardDetailResponse getBoard(Long id, User loginUser);
 
     // 게시판 목록
-    Page<BoardCardResponse> getBoardAll(BoardSearchFilter boardSearchFilter, User loginUser);
+    PageResponseDTO<BoardCardResponse> getBoardAll(BoardSearchFilter boardSearchFilter);
 
 
 }

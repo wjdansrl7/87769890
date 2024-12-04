@@ -1,5 +1,6 @@
 package com.sk.backend.domain.dto.board;
 
+import lombok.Builder;
 import lombok.Getter;
 
 /**
@@ -10,8 +11,8 @@ import lombok.Getter;
  * description    :
  */
 @Getter
+@Builder
 public class BoardCreateRequest {
-
     private String title;
     private String content;
     private String file;

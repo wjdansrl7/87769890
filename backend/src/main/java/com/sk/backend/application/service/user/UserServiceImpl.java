@@ -2,8 +2,13 @@ package com.sk.backend.application.service.user;
 
 import com.sk.backend.domain.dto.user.LoginRequest;
 import com.sk.backend.domain.dto.user.LoginResponse;
+import com.sk.backend.domain.dto.user.UserDetailResponse;
+import com.sk.backend.domain.dto.user.UserDto;
 import com.sk.backend.domain.entity.User;
 import com.sk.backend.domain.repository.user.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,14 +63,33 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    // TODO: 토큰 방식 활용하기
     @Override
-    public void logout() {
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        removeOAuthAuthorizationCookie(response);
+    }
 
+    private void removeOAuthAuthorizationCookie(HttpServletResponse response) {
+        Cookie cookie = new Cookie("refreshToken", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
     }
 
     @Override
-    public User selectLoginUser(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당하는 유저가 업습니다."));
+    public User selectLoginUser(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public UserDetailResponse getUserInfo(String username) {
+        User loginUser = userRepository.findByUsername(username);
+
+        return UserDetailResponse
+                .builder()
+                .username(loginUser.getUsername())
+                .role(loginUser.getRole())
+                .build();
     }
 }
